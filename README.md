@@ -44,3 +44,13 @@ Security
 --------
 
 This system is not designed to protect sensitive data from determined attackers. It is not intended for use on the public wed as it is. 
+
+
+Outstanding issues
+------------------
+
+* A proper username/password system is required for general use
+* A setup script
+* Updating browser support
+
+Anyone interested in using this can contact me, and I will help bring it up to date
