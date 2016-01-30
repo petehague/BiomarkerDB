@@ -1,0 +1,106 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
+<head>
+<title>Biomarkers Database</title>
+<link rel="stylesheet" type="text/css" href="main.css" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<script type="text/javascript" src="javascript/main.js"></script>
+
+<script type="text/javascript">
+var sessionId; //Identifies the logged in user
+var sessionAction; //The current project the session is uploading, if any
+var sessionUpload; //The handle of the interval timer that drives the progress updates
+var sessionToken; //A variable to stop the progress bar spamming the server when it is running slowly
+var postMan; //The handler for all http requests
+var bmusername; //username
+var bmpassword; //password
+
+var systemPath="http://127.0.0.1/cgi-bin"; //Change this when code is moved
+
+try {
+  postMan=new XMLHttpRequest(); //user has a good browser - firefox, opera, safari
+} catch (err) {
+  try {
+    postMan=new ActiveXObject("Msxml2.XMLHTTP"); //user is a bit of a noob - IE 6+
+  } catch (err) {
+    try {
+      postMan=new ActiveXObject("Microsoft.XMLHTTP"); //even more of a noob - older IE
+    } catch (err) {
+      alert("Your browser does not support AJAX, please update it!"); //user is a time traveller from the 1990s - IE<5, Netscape, Lynx or some wierd shit like that
+    }
+  }
+}
+
+function menu(item) {
+  if (sessionId) {
+  switch (item) {
+    case "home":
+      home();
+      break;
+
+    case "datasets":
+      datasets();
+      break;
+
+    case "upload":
+      upload();
+      break;
+
+    case "settings":
+      settings();
+      break;
+
+    case "logout":
+      logout();
+      break;
+
+    default:
+      break;
+  }
+  }
+}
+</script>
+
+</head>
+
+<body>
+<div id="banner">
+  <h1>Biomarkers Database</h1>
+</div>
+
+<div id="main">
+  
+  <div id="workarea">
+    &nbsp;
+  </div>
+
+  <div id="leftmenu">
+    <ul class="menu">
+      <li id="home" class="menuitem"><a class="white" href="javascript:menu('home')">Home</a></li>
+      <li id="home" class="menuitem"><a class="white" href="javascript:menu('datasets')">Datasets</a></li>
+      <li id="home" class="menuitem"><a class="white" href="javascript:menu('upload')">Upload</a></li>
+      <li id="home" class="menuitem"><a class="white" href="javascript:menu('settings')">Settings</a></li>
+      <li id="home" class="menuitem"><a class="white" href="javascript:menu('logout')">Logout</a></li>    
+    </ul>      
+  </div>
+</div>
+<script type="text/javascript">
+  var ca = document.cookie.split(';');
+  for(var i=0;i < ca.length;i++) {
+    var c = ca[i];
+    while (c.charAt(0)==' ') c = c.substring(1,c.length);
+    if (c.indexOf("username=") == 0) bmusername=c.substring(9,c.length);
+  }
+
+  if (!bmusername) {
+    login();
+  }
+  else {
+    sessionId=bmusername;
+    home();
+  }
+</script>
+</body>
